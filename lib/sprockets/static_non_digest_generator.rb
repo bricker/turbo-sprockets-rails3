@@ -1,4 +1,5 @@
 require 'fileutils'
+require 'iconv'
 
 module Sprockets
   class StaticNonDigestGenerator
@@ -40,7 +41,7 @@ module Sprockets
           if abs_digest_path.match(/\.(?:js|css)$/)
             mtime = File.mtime(abs_digest_path)
 
-            asset_body = File.read(abs_digest_path)
+            asset_body = Iconv.conv('UTF-8', 'iso8859-1', File.read(abs_digest_path))
 
             # Find all hashes in the asset body with a leading '-'
             asset_body.gsub!(DIGEST_REGEX) do |match|
